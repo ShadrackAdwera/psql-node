@@ -5,3 +5,8 @@ export interface IUserData {
   updated_at: string;
   bio: string;
 }
+
+export interface IUser {
+  username: string;
+  bio: string;
+}

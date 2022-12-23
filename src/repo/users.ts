@@ -1,5 +1,6 @@
+import { QueryResult } from 'pg';
 import { pgPool } from '../pool';
-import { IUserData } from '../types';
+import { IUserData, IUser } from '../types';
 
 class UserRepo {
   static async find(): Promise<IUserData[]> {
@@ -15,11 +16,28 @@ class UserRepo {
     return rows;
   }
 
-  static async create() {}
+  static async create({ username, bio }: IUser): Promise<IUserData[]> {
+    const { rows } = await pgPool.query<IUserData>(
+      `INSERT INTO users (username, bio) VALUES ($1,$2) RETURNING *;`,
+      [username, bio]
+    );
+    return rows;
+  }
 
-  static async findAndUpdate() {}
+  static async findAndUpdate(
+    id: number,
+    { username, bio }: IUser
+  ): Promise<IUserData[]> {
+    const { rows } = await pgPool.query(
+      `UPDATE users SET username = $1, bio = $2 WHERE id = $3 RETURNING *;`,
+      [username, bio, id]
+    );
+    return rows;
+  }
 
-  static async findAndDelete() {}
+  static async findAndDelete(id: number): Promise<QueryResult<any>> {
+    return await pgPool.query(`DELETE FROM users WHERE id = $1;`, [id]);
+  }
 }
 
 export { UserRepo };
