@@ -18,7 +18,7 @@ class PgPool {
     queryTextOrConfig: string | QueryConfig<I>,
     values?: I
   ): Promise<QueryResult<R>> {
-    return this._pool!.query(queryTextOrConfig);
+    return this._pool!.query(queryTextOrConfig, values);
   }
 }
 

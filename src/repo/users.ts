@@ -8,9 +8,9 @@ class UserRepo {
   }
 
   static async findById(id: number): Promise<IUserData[]> {
-    //TODO: FIX SECURITY ISSUE
     const { rows } = await pgPool.query<IUserData>(
-      `SELECT * FROM users WHERE id = ${id};`
+      `SELECT * FROM users WHERE id = $1;`,
+      [id]
     );
     return rows;
   }
