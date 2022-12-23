@@ -1,4 +1,3 @@
-import { QueryResult } from 'pg';
 import { pgPool } from '../pool';
 import { IUserData } from '../types';
 
@@ -8,11 +7,12 @@ class UserRepo {
     return rows;
   }
 
-  static async findById(id: number): Promise<IUserData> {
+  static async findById(id: number): Promise<IUserData[]> {
+    //TODO: FIX SECURITY ISSUE
     const { rows } = await pgPool.query<IUserData>(
       `SELECT * FROM users WHERE id = ${id};`
     );
-    return rows[0];
+    return rows;
   }
 
   static async create() {}
