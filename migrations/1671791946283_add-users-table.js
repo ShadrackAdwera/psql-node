@@ -5,8 +5,9 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.sql(`
     CREATE TABLE users (id SERIAL PRIMARY KEY, 
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIME,
-        Updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIME,
+        username VARCHAR(20) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        Updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         bio VARCHAR(240)
         );
     `);
