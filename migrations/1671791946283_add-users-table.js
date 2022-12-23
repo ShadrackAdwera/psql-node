@@ -8,7 +8,8 @@ exports.up = (pgm) => {
         username VARCHAR(20) NOT NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         Updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        bio VARCHAR(240)
+        bio VARCHAR(240),
+        UNIQUE(username)
         );
     `);
 };
