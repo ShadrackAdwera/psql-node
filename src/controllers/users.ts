@@ -14,6 +14,8 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
   if (!id) return next(new HttpError('Please provide the ID', 400));
   const user = await UserRepo.findById(Number(id));
+  if (user.length === 0)
+    return next(new HttpError('This user does not exist', 404));
   const parsedUser = toCamelCase(user);
   res.status(200).json({ user: parsedUser[0] });
 };
@@ -28,6 +30,9 @@ const addUser = async (req: Request, res: Response, next: NextFunction) => {
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
   const { username, bio } = req.body;
+  const user = await UserRepo.findById(Number(id));
+  if (user.length === 0)
+    return next(new HttpError('This user does not exist', 404));
   const data = await UserRepo.findAndUpdate(Number(id), { username, bio });
   const parsedUser = toCamelCase(data);
   res
@@ -36,6 +41,9 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
+  const user = await UserRepo.findById(Number(id));
+  if (user.length === 0)
+    return next(new HttpError('This user does not exist', 404));
   await UserRepo.findAndDelete(Number(id));
   res.status(200).json({ message: 'User has been deleted' });
 };
