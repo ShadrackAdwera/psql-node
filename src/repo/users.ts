@@ -38,6 +38,13 @@ class UserRepo {
   static async findAndDelete(id: number): Promise<QueryResult<any>> {
     return await pgPool.query(`DELETE FROM users WHERE id = $1;`, [id]);
   }
+
+  static async count(): Promise<number> {
+    const { rows } = await pgPool.query<{ count: string }>(
+      `SELECT COUNT(*) FROM users;`
+    );
+    return Number(rows[0].count);
+  }
 }
 
 export { UserRepo };
