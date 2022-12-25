@@ -1,5 +1,6 @@
 import { HttpError } from '@adwesh/common';
 import { Request, Response, NextFunction } from 'express';
+import { validationResult } from 'express-validator';
 import { UserRepo } from '../repo/users';
 import { IUserData } from '../types';
 import { toCamelCase } from '../utils/toCamelCase';
@@ -17,6 +18,8 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ user: parsedUser[0] });
 };
 const addUser = async (req: Request, res: Response, next: NextFunction) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) return next(new HttpError('Provide a username', 422));
   const { username, bio } = req.body;
   const data = await UserRepo.create({ username, bio });
   const parsedUser = toCamelCase(data);
