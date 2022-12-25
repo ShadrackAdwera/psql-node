@@ -11,10 +11,10 @@ import {
 
 const router = Router();
 
-router.get('/', getUsers);
+router.get('', getUsers);
 router.get('/:id', getUser);
 router.post(
-  '/',
+  '',
   [body('username').trim().not().isEmpty().isLength({ max: 20 })],
   addUser
 );
