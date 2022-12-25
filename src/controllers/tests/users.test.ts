@@ -25,7 +25,7 @@ describe('user controllers', () => {
       const { body } = await request(app).post(baseUrl).send(user).expect(201);
       expect(body.user.username).toBe(user.username);
       const newTotalUsers = await UserRepo.count();
-      expect(newTotalUsers).toEqual(1);
+      expect(newTotalUsers).toEqual(newTotalUsers - totalUsers);
     });
   });
   describe('update users controller', () => {
@@ -57,10 +57,10 @@ describe('user controllers', () => {
       expect(initialCount).toEqual(0);
       const { body } = await request(app).post(baseUrl).send(user).expect(201);
       const dbUsers = await UserRepo.count();
-      expect(dbUsers).toEqual(1);
+      expect(dbUsers).toEqual(dbUsers - initialCount);
       await request(app).delete(`${baseUrl}/${body.user.id}`).expect(200);
       const allUsers = await UserRepo.count();
-      expect(allUsers).toEqual(0);
+      expect(allUsers).toEqual(initialCount);
     });
   });
 });
